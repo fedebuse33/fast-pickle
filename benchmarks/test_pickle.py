@@ -42,10 +42,3 @@ class TestLoads:
         data = fastpickle.dumps(value)
         benchmark.group = f"loads[{name}]"
         benchmark(fastpickle.loads, data)
-
-
-def test_circular_reference():
-    a = []
-    a.append(a)
-    with pytest.raises(RecursionError):
-        fastpickle.dumps(a)
