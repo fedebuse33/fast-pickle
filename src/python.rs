@@ -1,7 +1,7 @@
 use crate::value::{MAX_DEPTH, Value};
-use pyo3::exceptions::{PyRecursionError, PyTypeError};
+use pyo3::exceptions::{PyOverflowError, PyRecursionError, PyTypeError};
 use pyo3::prelude::*;
-use pyo3::types::{PyBytes, PyDict, PyList, PySet, PyTuple};
+use pyo3::types::{PyBool, PyBytes, PyDict, PyFloat, PyInt, PyList, PySet, PyTuple};
 
 pub fn from_python(obj: &Bound<'_, PyAny>) -> PyResult<Value> {
     from_python_with_depth(obj, 0)
@@ -16,16 +16,21 @@ fn from_python_with_depth(obj: &Bound<'_, PyAny>, depth: usize) -> PyResult<Valu
         return Ok(Value::None);
     }
 
-    if let Ok(value) = obj.extract::<bool>() {
-        return Ok(Value::Bool(value));
+    if obj.is_instance_of::<PyBool>() {
+        return Ok(Value::Bool(obj.extract::<bool>()?));
     }
 
-    if let Ok(value) = obj.extract::<i64>() {
-        return Ok(Value::Int(value));
+    if obj.is_instance_of::<PyInt>() {
+        return match obj.extract::<i64>() {
+            Ok(value) => Ok(Value::Int(value)),
+            Err(_) => Err(PyOverflowError::new_err(
+                "integer out of range: fastpickle supports 64-bit signed integers only",
+            )),
+        };
     }
 
-    if let Ok(value) = obj.extract::<f64>() {
-        return Ok(Value::Float(value));
+    if obj.is_instance_of::<PyFloat>() {
+        return Ok(Value::Float(obj.extract::<f64>()?));
     }
 
     if let Ok(value) = obj.extract::<String>() {
