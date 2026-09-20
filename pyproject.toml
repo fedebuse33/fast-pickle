@@ -1,0 +1,36 @@
+[build-system]
+requires = ["maturin>=1.15,<2.0"]
+build-backend = "maturin"
+
+[project]
+name = "fast-pickle"
+version = "0.1.0"
+description = "A pickle-like serializer written in Rust that is, regrettably, not that fast"
+readme = "README.md"
+requires-python = ">=3.13"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Federico" }]
+keywords = ["serialization", "pickle", "rust"]
+classifiers = [
+    "Programming Language :: Rust",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.13",
+    "Typing :: Typed",
+]
+
+[project.urls]
+Repository = "https://github.com/TUO-UTENTE/fast-pickle"
+
+[dependency-groups]
+tests = ["pytest>=9.1.1", "pytest-benchmark>=5.3.0"]
+
+
+[tool.maturin]
+module-name = "fastpickle._core"
+python-packages = ["fastpickle"]
+python-source = "src"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--benchmark-warmup=on --benchmark-warmup-iterations=1000 --benchmark-disable-gc"

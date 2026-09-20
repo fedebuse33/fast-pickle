@@ -1,0 +1,14 @@
+[package]
+name = "fast-pickle"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.85"
+description = "A pickle-like serializer written in Rust that is, regrettably, not that fast"
+license = "MIT"
+
+[lib]
+name = "_core"
+crate-type = ["cdylib"]
+
+[dependencies]
+pyo3 = { version = "0.28.2", features = ["abi3-py313"] }
