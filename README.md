@@ -10,10 +10,11 @@ A pickle-like serializer written in Rust, with a name that is best described as 
 ## Installation
 
 ```bash
-pip install fast-pickle
+pip install not-so-fast-pickle
 ```
 
 Requires Python 3.13+. Wheels are built with `abi3`, so one wheel covers every Python version from 3.13 onwards.
+The package is called `not-so-fast-pickle`, but you import it as `fastpickle`.
 
 ## Usage
 

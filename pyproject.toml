@@ -3,7 +3,7 @@ requires = ["maturin>=1.15,<2.0"]
 build-backend = "maturin"
 
 [project]
-name = "fast-pickle"
+name = "not-so-fast-pickle"
 version = "0.1.0"
 description = "A pickle-like serializer written in Rust that is, regrettably, not that fast"
 readme = "README.md"
